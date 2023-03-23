@@ -11,9 +11,15 @@ public class VG extends PhysicalDrive {
         PVs.add(PV);
     }
 
-    public void addStorage(PV newPV) {
-        setSize(newPV.getSize() + getSize());
-        PVs.add(newPV);
+    public boolean addStorage(PV newPV) {
+        if (!PVs.contains(newPV)) {
+            setSize(newPV.getSize() + getSize());
+            newPV.setVG(this);
+            PVs.add(newPV);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean setExtraSpace (int spaceUsed) {

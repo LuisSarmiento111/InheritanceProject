@@ -27,4 +27,8 @@ public class PhysicalDrive {
     public void setSize(int size) {
         this.size = size;
     }
+
+    public String toString() {
+        return name + " [" + size + "G]" + "[" + id + "]";
+    }
 }
