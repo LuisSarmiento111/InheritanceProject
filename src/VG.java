@@ -6,8 +6,8 @@ public class VG extends PhysicalDrive {
     private int extraSpace;
     private ArrayList<LV> LVs;
 
-    public VG (String n, PV PV) {
-        super(n,PV.getSize());
+    public VG(String n, PV PV) {
+        super(n, PV.getSize());
         PVs.add(PV);
     }
 
@@ -22,7 +22,7 @@ public class VG extends PhysicalDrive {
         }
     }
 
-    public boolean setExtraSpace (int spaceUsed) {
+    public boolean setExtraSpace(int spaceUsed) {
         if (extraSpace - spaceUsed <= 0) {
             return false;
         } else {
@@ -33,5 +33,17 @@ public class VG extends PhysicalDrive {
 
     public void addLV(LV LV) {
         LVs.add(LV);
+    }
+
+    public ArrayList<PV> getPVs() {
+        return PVs;
+    }
+
+    public int getExtraSpace() {
+        return extraSpace;
+    }
+
+    public ArrayList<LV> getLVs() {
+        return LVs;
     }
 }

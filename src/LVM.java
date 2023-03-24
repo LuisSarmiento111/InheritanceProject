@@ -15,22 +15,110 @@ public class LVM {
 
     }
 
-    public String logic (String command) { // temp name change later
+    public String logic(String command) { // temp name change later
         if (command.contains("install-drive")) {
-            String[] test = command.split(" ");
-            physicalDrives.add(new PhysicalDrive(test[1], Integer.parseInt(test[2].substring(0, test[2].indexOf("G")))));
-            return "Drive " + physicalDrives.get(physicalDrives.size() - 1).getName() + " installed";
-        } else if (command.equals("list-drives")
-        ) {
+            String[] info = command.split(" ");
+            if (findDrive(info[1]) != null) {
+                return "Drive with the same name already is installed";
+            } else {
+                physicalDrives.add(new PhysicalDrive(info[1], Integer.parseInt(info[2].substring(0, info[2].indexOf("G")))));
+                return "Drive " + info[1] + " installed";
+            }
+        }
+        if (command.equals("list-drives")) {
             return "" + listPhysicalDrives();
+        }
+        if (command.contains("pvcreate")) {
+            String[] info = command.split(" ");
+            if (findDrive(info[2]) == null) {
+                return "Physical drive \"" + info[2] + " \"does not exist in the system.";
+            } else if (findPV(info[1]) != null) {
+                return "Physical volume with the same name already is installed";
+            } else if (VGs.size() != 0) {
+            } else {
+                PVs.add(new PV(info[1], findDrive(info[2])));
+                return info[1] + " created";
+            }
+        }
+        if (command.equals("pvlist")) {
+            return "" + listPVsByVG();
+        }
+        if (command.contains("vgcreate")) {
+            String[] info = command.split(" ");
+            if (findDrive(info[2]) == null) {
+                return "Volume group \"" + info[2] + " \"does not exist in the system.";
+            } else if (VGs.contains(findPV(info[1]))) {
+
+                VGs.add(new VG(info[1], findPV(info[2])));
+                return info[1] + " created";
+            }
+        }
+        return "Not valid command";
+    }
+
+    public String listPVsByVG() {
+        if (VGs.size() == 0) {
+            String PVsInfo = "";
+            for (PV PV : PVs) {
+                PVsInfo += PV.toString() + "\n";
+            }
+            return PVsInfo;
         } else {
-            return "Not valid command";
+            String PVsInfo = "";
+            for (VG VG : VGs) {
+                for (PV PV : VG.getPVs()) {
+                    PVsInfo += PV.toString() + "\n";
+                }
+            }
+            return PVsInfo;
         }
     }
 
-    public void sortBySize() {
-
+    public boolean VGcontainsPV(PV PV) {
+        for (VG VG : VGs) {
+            if (VG.getPVs().contains(PV)) {
+                return true;
+            }
+        }
+        return false;
     }
+
+    public PhysicalDrive findDrive(String name) {
+        for (PhysicalDrive drive : physicalDrives) {
+            if (drive.getName().equals(name)) {
+                return drive;
+            }
+        }
+        return null;
+    }
+
+    public VG findVG(String name) {
+        for (VG drive : VGs) {
+            if (drive.getName().equals(name)) {
+                return drive;
+            }
+        }
+        return null;
+    }
+
+    public PV findPV(String name) {
+        for (PV drive : PVs) {
+            if (drive.getName().equals(name)) {
+                return drive;
+            }
+        }
+        return null;
+    }
+
+    public LV findLV(String name) {
+        for (LV drive : LVs) {
+            if (drive.getName().equals(name)) {
+                return drive;
+            }
+        }
+        return null;
+    }
+
 
     public String listPhysicalDrives() {
         String drivesInfo = "";
