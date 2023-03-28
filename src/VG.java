@@ -8,6 +8,8 @@ public class VG extends PhysicalDrive {
 
     public VG(String n, PV PV) {
         super(n, PV.getSize());
+        PVs = new ArrayList<PV>();
+        LVs = new ArrayList<LV>();
         PVs.add(PV);
     }
 
