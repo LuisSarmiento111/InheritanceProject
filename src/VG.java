@@ -37,6 +37,10 @@ public class VG extends PhysicalDrive {
         LVs.add(LV);
     }
 
+    public void addPV(PV PV) {
+        PVs.add(PV);
+    }
+
     public ArrayList<PV> getPVs() {
         return PVs;
     }

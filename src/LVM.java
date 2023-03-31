@@ -30,14 +30,17 @@ public class LVM {
         }
         if (command.contains("pvcreate")) { // Physical Volume
             String[] info = command.split(" ");
-            if (findDrive(info[2]) == null) {
-                return "Physical drive \"" + info[2] + " \"does not exist in the system.";
-            } else if (findPV(info[1]) != null) {
-                return "Physical volume with the same name already is installed";
-            } else if (VGs.size() != 0) {
-            } else {
-                PVs.add(new PV(info[1], findDrive(info[2])));
-                return info[1] + " created";
+            if (info.length > 1) {
+                if (findDrive(info[2]) == null) {
+                    return "Physical drive \"" + info[2] + " \"does not exist in the system.";
+                } else if (findPV(info[1]) != null) {
+                    return "Physical volume with the same name already is installed";
+                } else if (PVscontainsPhysical(findDrive(info[2]))) {
+                    return info[2] + " is already in connected to another physical volume";
+                } else {
+                    PVs.add(new PV(info[1], findDrive(info[2])));
+                    return info[1] + " created";
+                }
             }
         }
         if (command.equals("pvlist")) {
@@ -50,10 +53,16 @@ public class LVM {
                 return "Volume group \"" + info[2] + "\"does not exist in the system.";
             } else if (VGs.contains(findVG(info[1]))) {
                 return info[1] + " already contains " + info[2];
-            } else if (findVG(info[1]) != null) {
-                return "Volume Group with the same name already is installed";
-            } else if (VGscontainsPV(findPV(info[2]))) {
+            }  else if (VGscontainsPV(findPV(info[2]))) {
                 return info[2] + " is already in another volume group";
+            } else if (findVG(info[1]) != null) {
+                if (findVG(info[1]).getPVs().contains(findPV(info[2]))) {
+                    return "Volume Group already has physical volume with name " + info[2] + " installed.";
+                } else {
+                    findVG(info[1]).addPV(findPV(info[2]));
+                    return info[2] + " added to " + info[1];
+                }
+
             } else {
                 System.out.println(findPV(info[2]));
                 VGs.add(new VG(info[1], findPV(info[2])));
@@ -85,6 +94,15 @@ public class LVM {
     public boolean VGscontainsPV(PV PV) {
         for (VG VG : VGs) {
             if (VG.getPVs().contains(PV)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean PVscontainsPhysical(PhysicalDrive physicalDrive) {
+        for (PV PV : PVs) {
+            if (PV.getConnectedDrive() == physicalDrive) {
                 return true;
             }
         }
