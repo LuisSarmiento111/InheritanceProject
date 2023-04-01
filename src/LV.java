@@ -8,4 +8,12 @@ public class LV extends PhysicalDrive {
         vg.setExtraSpace(s);
         vg.addLV(this);
     }
+
+    public VG getAssociatedVG() {
+        return associatedVG;
+    }
+
+    public String toString() {
+        return super.getName() + ": [" + super.getSize() + "] [" + associatedVG + "] [" + super.getId() + "]";
+    }
 }

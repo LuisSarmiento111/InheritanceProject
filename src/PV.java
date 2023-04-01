@@ -24,7 +24,7 @@ public class PV extends PhysicalDrive{
 
     public String toString() {
         if (volumeGroup == null) {
-            super.toString();
+            return super.toString();
         }
         return super.getName() + " [" + super.getSize() + "G]" + "[" + getVolumeGroup() + "]" + "[" + super.getId() + "]";
     }
