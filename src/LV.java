@@ -14,6 +14,6 @@ public class LV extends PhysicalDrive {
     }
 
     public String toString() {
-        return super.getName() + ": [" + super.getSize() + "] [" + associatedVG + "] [" + super.getId() + "]";
+        return super.getName() + ": [" + super.getSize() + "G] [" + associatedVG.getName() + "] [" + super.getId() + "]";
     }
 }

@@ -55,9 +55,8 @@ public class LVM {
             }  else if (VGscontainsPV(findPV(info[2]))) {
                 return info[2] + " is already in another volume group";
             } else {
-                System.out.println(findPV(info[2]));
                 VGs.add(new VG(info[1], findPV(info[2])));
-                return info[1] + " created";
+                return "" + info[1] + " created";
             }
         }
         if (command.contains("vgextend")) {
@@ -75,7 +74,7 @@ public class LVM {
                     return "Volume Group already has physical volume with name " + info[2] + " installed.";
                 } else {
                     findVG(info[1]).addPV(findPV(info[2]));
-                    return info[2] + " added to " + info[1];
+                    return "" + info[2] + " added to " + info[1];
                 }
             }
         }
@@ -88,12 +87,12 @@ public class LVM {
                 return "Volume group \"" + info[3] + "\"does not exist in the system.";
             } else if (findLV(info[1]) != null) {
                 return "Logical volume with the same name already is installed";
-            } else if (findVG(info[3]).getExtraSpace() < findLV(info[1]).getSize()) {
+            } else if (findVG(info[3]).getExtraSpace() < Integer.parseInt(info[2].substring(0, info[2].indexOf("G")))) {
                 return "Cannot create " + info[1] + " because there is not enough space in " + info[3];
             } else {
-                System.out.println(findPV(info[2]));
-                LVs.add(new LV(info[1], Integer.parseInt(info[2]), findVG(info[3])));
-                return info[1] + " created";
+                LVs.add(new LV(info[1], Integer.parseInt(info[2].substring(0, info[2].indexOf("G"))), findVG(info[3])));
+                return "" + info[1] + " " + Integer.parseInt(info[2].substring(0, info[2].indexOf("G"))) + " " + info[3]
+                        + "\n" + info[1] + " created";
             }
         }
         if (command.equals("lvlist")) {
@@ -194,17 +193,5 @@ public class LVM {
             drivesInfo += LV.toString() + "\n";
         }
         return drivesInfo;
-    }
-
-    public ArrayList<PV> getPVs() {
-        return PVs;
-    }
-
-    public ArrayList<VG> getVGs() {
-        return VGs;
-    }
-
-    public ArrayList<LV> getLVs() {
-        return LVs;
     }
 }

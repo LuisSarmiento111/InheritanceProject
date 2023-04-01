@@ -9,7 +9,9 @@ public class LVMRunner {
         while (!cmd.toLowerCase().equals("exit")) {
             System.out.print("cmd#: ");
             cmd = scanner.nextLine();
-            System.out.println(system.logic(cmd));
+            if (!cmd.toLowerCase().equals("exit")) {
+                System.out.println(system.logic(cmd));
+            }
         }
     }
 }

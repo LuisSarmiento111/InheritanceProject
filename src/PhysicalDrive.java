@@ -24,8 +24,8 @@ public class PhysicalDrive {
         return id;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setSize(int s) {
+        size = s;
     }
 
     public String toString() {

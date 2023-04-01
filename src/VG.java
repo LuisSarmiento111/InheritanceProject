@@ -11,6 +11,8 @@ public class VG extends PhysicalDrive {
         PVs = new ArrayList<PV>();
         LVs = new ArrayList<LV>();
         PVs.add(PV);
+        PV.setVG(this);
+        extraSpace = PV.getSize();
     }
 
 
@@ -38,7 +40,8 @@ public class VG extends PhysicalDrive {
 
     public void addPV(PV PV) {
         PVs.add(PV);
-        setSize(PV.getSize() + getSize());
+        super.setSize(PV.getSize() + super.getSize());
+        setExtraSpace(extraSpace + PV.getSize());
         PV.setVG(this);
         setExtraSpace(super.getSize() - getLVStorage());
     }
@@ -51,7 +54,12 @@ public class VG extends PhysicalDrive {
         return extraSpace;
     }
 
-    public ArrayList<LV> getLVs() {
-        return LVs;
+    public String toString() {
+        String listPV = PVs.get(0).getName();
+        for (int i = 1; i < PVs.size(); i++) {
+            listPV += ", " + PVs.get(i).getName();
+        }
+        return super.getName() + ": total: [" + super.getSize() + "G] available: [" + extraSpace + "G] [" + listPV + "] ["
+                + super.getId() + "]";
     }
 }
