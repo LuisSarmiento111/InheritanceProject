@@ -1,0 +1,121 @@
+LVM class:
+
+Instance Variables:
+private ArrayList<PhysicalDrive> physicalDrives
+private ArrayList<PV> PVs
+private ArrayList<VG> VGs
+private ArrayList<LV> LVs
+
+Constructor:
+public LVM()
+
+Methods:
+logic(String command)
+public String listPVsByVG()
+public boolean VGscontainsPV(PV PV)
+public boolean PVscontainsPhysical(PhysicalDrive physicalDrive)
+public PhysicalDrive findDrive(String name)
+public VG findVG(String name)
+public PV findPV(String name)
+public LV findLV(String name)
+public String listPhysicalDrives()
+public String listVGS()
+public String listLVs()
+
+
+PhysicalDrive class(Parent Class):
+
+Instance Variables:
+private String name
+private int size
+private UUID id
+
+Constructor:
+public PhysicalDrive (String n, int s)
+
+Methods:
+public String getName()
+public int getSize()
+public UUID getId()
+public void setSize(int s)
+public String toString()
+
+PV class (extends PhysicalDrive class):
+
+Instance Variables:
+private PhysicalDrive connectedDrive
+private VG volumeGroup
+
+Constructor:
+public PV (String n, PhysicalDrive drive)
+
+Methods:
+public void setVG(VG VG)
+public PhysicalDrive getConnectedDrive()
+public VG getVolumeGroup()
+
+public String toString()
+
+VG class (extends PhysicalDrive class):
+
+Instance Variables:
+private ArrayList<PV> PVs
+private int extraSpace
+private ArrayList<LV> LVs
+
+Constructor:
+public VG(String n, PV PV)
+
+Methods:
+public boolean setExtraSpace(int spaceUsed)
+public void addLV(LV LV)
+public int getLVStorage()
+public void addPV(PV PV)
+public ArrayList<PV> getPVs()
+
+PV class (extends PhysicalDrive class):
+
+Instance Variables:
+private PhysicalDrive connectedDrive
+private VG volumeGroup
+
+Constructor:
+public PV (String n, PhysicalDrive drive)
+
+Methods:
+public void setVG(VG VG)
+public PhysicalDrive getConnectedDrive()
+public VG getVolumeGroup()
+public String toString()
+
+LV class (extends PhysicalDrive class):
+
+Instance Variables:
+private VG associatedVG
+
+Constructor:
+public LV (String n, int s, VG vg)
+
+Methods:
+public VG getAssociatedVG()
+public String toString()
+
+LVMRunner class:
+1. import scanner class
+2. Create a new Scanner object
+4. Create a LVM object called system
+5. Print out what the system is
+6. Create string variable cmd
+7. Use a while loop to forever prompt the user to put in a command until the cmd variables equals "exit"
+8. When user puts in a command, it'll use the LVM method, logic(), and prints out the return string
+9. If user's command contains "install-drive", it'll create a new PhysicalDrive object
+10. If user's command contains "list-drives", it'll list all PhysicalDrive objects.
+11. If user's command contains "pvcreate", it'll create a new PV object
+12. If user's command contains "pvlist", it'll list all PV objects.
+13. If user's command contains "vgcreate", it'll create a new VG object
+14. if user's command contains "vgextend", it'll add a PV object to a VG object
+15. If user's command contains "vglist", it'll list all VG objects.
+16. If user's command contains "lvcreate", it'll create a new LV object
+17. If user's command contains "lvlist", it'll list all LV objects.
+18. If no valid command is inserted, it'll return an error message.
+19. When user enters "exit", the program stops running.
